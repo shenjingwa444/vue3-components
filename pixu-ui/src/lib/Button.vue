@@ -15,14 +15,19 @@ export default {
     },
     size: {
       type: String,
+    },
+    level: {
+      type: String,
+      default: 'normal'
     }
   },
   setup(props) {
-    const {theme, size} = props;
+    const {theme, size, level} = props;
     const classes = computed(() => {
       return {
         [`pixu-theme-${theme}`]: theme,
         [`pixu-size-${size}`]: size,
+        [`pixu-level-${level}`]: level,
       };
     });
     return {classes};
@@ -36,6 +41,7 @@ $border-color: #d9d9d9;
 $color: #333;
 $blue: #40a9ff;
 $radius: 4px;
+$red:red;
 .pixu-button {
   height: $h;
   padding: 0 12px;
@@ -49,46 +55,29 @@ $radius: 4px;
   border: 1px solid $border-color;
   border-radius: $radius;
   box-shadow: 0 1px 0 fade-out(black, 0.95);
+  transition: background 250ms;
 
   & + & {
     margin-left: 8px;
   }
-
   &:focus, &:hover {
     color: $blue;
     border-color: $blue;
   }
-
   &:focus {
     outline: none
   }
-
   &::-moz-focus-inner {
     border: 0;
   }
-
-  &.pixu-size-big {
-    font-size: 24px;
-    height: 48px;
-    padding: 0 16px;
-  }
-
-  &.pixu-size-small {
-    font-size: 12px;
-    height: 20px;
-    padding: 0 4px;
-  }
-
   &.pixu-theme-link {
     border-color: transparent;
     box-shadow: none;
     color: $blue;
-
     &:hover, &:focus {
       color: lighten($blue, 10%);
     }
   }
-
   &.pixu-theme-text {
     border-color: transparent;
     box-shadow: none;
@@ -96,6 +85,59 @@ $radius: 4px;
 
     &:hover, &:focus {
       background: darken(white, 5%);
+    }
+  }
+  &.pixu-size-big {
+    font-size: 24px;
+    height: 48px;
+    padding: 0 16px;
+  }
+  &.pixu-size-small {
+    font-size: 12px;
+    height: 20px;
+    padding: 0 4px;
+  }
+  &.pixu-theme-button {
+    &.pixu-level-main {
+      background-color: $blue;
+      color: white;
+      border-color: $blue;
+      &:hover, &:focus {
+        background: darken($blue, 10%);
+        border-color: darken($blue, 10%)
+      }
+    }
+    &.pixu-level-danger {
+      background-color: $red;
+      border-color: $red;
+      color: white;
+
+      &:hover, &:focus {
+        background-color: darken($red, 10%);
+        border-color: darken($red, 10%);
+      }
+    }
+  }
+  &.pixu-theme-link{
+    &.pixu-level-danger{
+      color: $red;
+      &:hover,&:focus{
+        color:darken($red,10%);
+      }
+    }
+  }
+  &.pixu-theme-text{
+    &.pixu-level-main{
+      color:$blue;
+      &:hover,&:focus{
+        color:darken($blue,10%)
+      }
+    }
+    &.pixu-level-danger{
+      color:$red;
+      &:hover,&:focus{
+        color:darken($red,10%)
+      }
     }
   }
 }
