@@ -3,13 +3,13 @@
     <div class="pixu-dialog-overlay" @click="onClickOverlay"></div>
     <div class="pixu-dialog-wrapper">
       <div class="pixu-dialog">
-        <header>标题
+        <header>
+          {{title}}
           <span class="pixu-dialog-close" @click="close">
           </span>
         </header>
         <main>
-          <p>第一行字</p>
-          <p>第二行字</p>
+          <slot/>
         </main>
         <footer>
           <Button level="main" @click="ok">OK</Button>
@@ -39,6 +39,10 @@ export default {
     },
     cancel:{
       type:Function,
+    },
+    title:{
+      type:String,
+      default:'提示',
     }
   },
   setup(props,context){

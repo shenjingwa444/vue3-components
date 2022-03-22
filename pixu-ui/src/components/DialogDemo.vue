@@ -5,6 +5,8 @@
   <Dialog v-model:visible="x"
           :closeOnClickOverlay="false"
           :ok="f1" :cancel="f2">
+    <div>hi</div>
+    <div>hi2</div>
   </Dialog>
 </template>
 
