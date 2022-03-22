@@ -4,12 +4,12 @@
     <div class="pixu-dialog-wrapper">
       <div class="pixu-dialog">
         <header>
-          {{title}}
+          <slot name="title"/>
           <span class="pixu-dialog-close" @click="close">
           </span>
         </header>
         <main>
-          <slot/>
+          <slot name="content"/>
         </main>
         <footer>
           <Button level="main" @click="ok">OK</Button>
