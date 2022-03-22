@@ -1,5 +1,5 @@
 <template>
-  <button class="pixu-button" :class=" classes ">
+  <button class="pixu-button" :class=" classes " :disabled="disabled">
     <slot/>
   </button>
 </template>
@@ -19,10 +19,14 @@ export default {
     level: {
       type: String,
       default: 'normal'
+    },
+    disabled:{
+      type:Boolean,
+      default:false,
     }
   },
   setup(props) {
-    const {theme, size, level} = props;
+    const {theme, size, level,} = props;
     const classes = computed(() => {
       return {
         [`pixu-theme-${theme}`]: theme,
@@ -42,6 +46,7 @@ $color: #333;
 $blue: #40a9ff;
 $radius: 4px;
 $red:red;
+$gray:gray;
 .pixu-button {
   height: $h;
   padding: 0 12px;
@@ -138,6 +143,21 @@ $red:red;
       &:hover,&:focus{
         color:darken($red,10%)
       }
+    }
+  }
+  &.pixu-theme-button{
+    &[disabled]{
+      cursor:not-allowed;
+      color:$gray;
+      &:hover{
+        border-color:$gray;
+      }
+    }
+  }
+  &.pixu-theme-link,&.pixu-theme-text{
+    &[disabled]{
+      cursor:not-allowed;
+      color:$gray;
     }
   }
 }
