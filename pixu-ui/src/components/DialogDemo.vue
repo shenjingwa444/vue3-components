@@ -1,3 +1,10 @@
 <template>
-  <div>这是Dialog组件页面</div>
+  <Dialog/>
 </template>
+
+<script lang="ts">
+import Dialog from '../lib/Dialog.vue';
+export default {
+  components:{Dialog}
+}
+</script>
