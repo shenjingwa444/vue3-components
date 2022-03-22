@@ -1,8 +1,9 @@
 <template>
-  <button class="pixu-button" :class=" `theme-${theme}` ">
+  <button class="pixu-button" :class=" `pixu-theme-${theme}` ">
     <slot/>
   </button>
 </template>
+
 <script lang="ts">
 export default {
   props:{
@@ -13,7 +14,8 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
+
+<style lang="scss">
 $h:32px;
 $border-color:#d9d9d9;
 $color:#333;
