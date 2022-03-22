@@ -1,21 +1,20 @@
 <template>
   <div>
-    <button :class="{'pixu-checked':value}" @click="toggle">
+    <button class="pixu-switch" :class="{'pixu-checked':value}" @click="toggle">
       <span></span>
     </button>
   </div>
 </template>
 
 <script lang="ts">
-import {ref} from 'vue';
 
 export default {
-  props:{
-    value:Boolean,
+  props: {
+    value: Boolean,
   },
-  setup(props,context) {
+  setup(props, context) {
     const toggle = () => {
-      context.emit('update:value',!props.value)
+      context.emit('update:value', !props.value);
     };
     return {toggle};
   }
@@ -25,7 +24,7 @@ export default {
 <style lang="scss">
 $h: 22px;
 $h2: $h - 4px;
-button {
+.pixu-switch {
   height: $h;
   width: $h*2;
   background: gray;
@@ -41,7 +40,7 @@ button {
     width: $h2;
     background: white;
     border-radius: $h2/2;
-    transition: left 1s;
+    transition: all 1s;
   }
 
   &.pixu-checked {
@@ -52,8 +51,22 @@ button {
   &.pixu-checked > span {
     left: calc(100% - #{$h2} - 2px)
   }
-  &:focus{
-    outline:none;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:active {
+    > span {
+      width: $h2 + 4px;
+    }
+  }
+
+  &.pixu-checked:active {
+    > span {
+      width: $h2 + 4px;
+      margin-left: -4px;
+    }
   }
 }
 
