@@ -4,7 +4,7 @@
       <div :class="{selected:t===selected}"
            @click="select(t)" class="pixu-tabs-nav-item"
            v-for="(t,index) in titles" :key='index'
-           :ref="(el) => { if(el) navItems[index] = el }">{{ t }}
+           :ref="el => { if(t===selected) selectedItem = el }">{{ t }}
       </div>
       <div class="pixu-tabs-nav-indicator" ref="indicator"></div>
     </div>
@@ -26,17 +26,13 @@ export default {
   },
   setup(props, context) {
     const container = ref<HTMLDivElement>(null);
-    const navItems = ref<HTMLDivElement[]>([]);
+    const selectedItem = ref<HTMLDivElement>(null);
     const indicator = ref<HTMLDivElement>(null);
     const x = () => {
-      const divs = navItems.value;
-      const result = divs.filter((item) => {
-        return item.classList.contains('selected');
-      })[0];
-      const {width} = result.getBoundingClientRect();
+      const {width} = selectedItem.value.getBoundingClientRect();
       indicator.value.style.width = width + 'px';
       const {left: left1} = container.value.getBoundingClientRect();
-      const {left: left2} = result.getBoundingClientRect();
+      const {left: left2} = selectedItem.value.getBoundingClientRect();
       const left = left2 - left1;
       indicator.value.style.left = left + 'px';
     };
@@ -59,7 +55,7 @@ export default {
       context.emit('update:selected', title);
     };
     return {
-      defaults, titles, current, select, navItems, indicator, container
+      defaults, titles, current, select,selectedItem, indicator, container
     };
   }
 };
@@ -98,7 +94,7 @@ $border-color: #d9d9d9;
       left: 0;
       bottom: -1px;
       width: 100px;
-      transition:all 250ms;
+      transition: all 250ms;
     }
   }
 
