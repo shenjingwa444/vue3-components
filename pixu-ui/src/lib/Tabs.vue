@@ -1,10 +1,11 @@
 <template>
   <div class="pixu-tabs">
-    <div class="pixu-tabs-nav">
+    <div class="pixu-tabs-nav" ref="container">
       <div :class="{selected:t===selected}"
            @click="select(t)" class="pixu-tabs-nav-item"
            v-for="(t,index) in titles" :key='index'
-           :ref="(el) => { if(el) navItems[index] = el }">{{ t }}</div>
+           :ref="(el) => { if(el) navItems[index] = el }">{{ t }}
+      </div>
       <div class="pixu-tabs-nav-indicator" ref="indicator"></div>
     </div>
     <div class="pixu-tabs-content">
@@ -15,7 +16,7 @@
 
 <script lang="ts">
 import Tab from './Tab.vue';
-import {computed, onMounted, ref} from 'vue';
+import {computed, onMounted, onUpdated, ref} from 'vue';
 
 export default {
   props: {
@@ -24,16 +25,24 @@ export default {
     }
   },
   setup(props, context) {
+    const container = ref<HTMLDivElement>(null);
     const navItems = ref<HTMLDivElement[]>([]);
-    const indicator = ref<HTMLDivElement>(null)
-    onMounted(() => {
+    const indicator = ref<HTMLDivElement>(null);
+    const x = () => {
       const divs = navItems.value;
-      const result = divs.filter((item)=>{
-        return item.classList.contains('selected')
-      })[0]
-      const {width} = result.getBoundingClientRect()
-      indicator.value.style.width = width + 'px'
-    });
+      const result = divs.filter((item) => {
+        return item.classList.contains('selected');
+      })[0];
+      const {width} = result.getBoundingClientRect();
+      indicator.value.style.width = width + 'px';
+      const {left: left1} = container.value.getBoundingClientRect();
+      const {left: left2} = result.getBoundingClientRect();
+      const left = left2 - left1;
+      indicator.value.style.left = left + 'px';
+    };
+    onMounted(x);
+    onUpdated(x);
+
     const defaults = context.slots.default();
     const titles = defaults.map(tag => tag.props.title);
     const current = computed(() => {
@@ -49,7 +58,9 @@ export default {
     const select = (title) => {
       context.emit('update:selected', title);
     };
-    return {defaults, titles, current, select, navItems,indicator};
+    return {
+      defaults, titles, current, select, navItems, indicator, container
+    };
   }
 };
 </script>
@@ -84,9 +95,10 @@ $border-color: #d9d9d9;
       position: absolute;
       height: 3px;
       background: $blue;
-      left:0;
+      left: 0;
       bottom: -1px;
       width: 100px;
+      transition:all 250ms;
     }
   }
 
