@@ -1,8 +1,7 @@
 <template>
   <div>
-    这是 Tabs 组件
-    <component :is="defaults[0]"/>
-    <component :is="defaults[1]"/>
+    <div v-for="(t,index) in titles" :key='index'>{{t}}</div>
+    <component v-for="(c,index) in defaults" :key="index" :is="c"/>
   </div>
 </template>
 
@@ -11,13 +10,13 @@ import Tab from './Tab.vue'
 export default {
   setup(props,context){
     const defaults = context.slots.default()
-    console.log(defaults[0])
+    const titles = defaults.map(tag=>tag.props.title)
     defaults.forEach((tag)=>{
       if(tag.type !== Tab){
         throw new Error('Tabs 字标签必须是 Tab')
       }
     })
-    return {defaults}
+    return {defaults,titles}
   }
 }
 </script>
