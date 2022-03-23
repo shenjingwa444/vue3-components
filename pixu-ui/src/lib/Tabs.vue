@@ -4,7 +4,7 @@
       <div :class="{selected:t===selected}"
            @click="select(t)" class="pixu-tabs-nav-item"
            v-for="(t,index) in titles" :key='index'
-           :ref="el => { if(t===selected) selectedItem = el }">{{ t }}
+           :ref="el => { if (t===selected) selectedItem = el }">{{ t }}
       </div>
       <div class="pixu-tabs-nav-indicator" ref="indicator"></div>
     </div>
@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import Tab from './Tab.vue';
-import {computed, onMounted, onUpdated, ref} from 'vue';
+import {computed, ref, watchEffect} from 'vue';
 
 export default {
   props: {
@@ -25,20 +25,18 @@ export default {
     }
   },
   setup(props, context) {
-    const container = ref<HTMLDivElement>(null);
     const selectedItem = ref<HTMLDivElement>(null);
+    const container = ref<HTMLDivElement>(null);
     const indicator = ref<HTMLDivElement>(null);
-    const x = () => {
+    watchEffect(() => {
+      console.log('effect');
       const {width} = selectedItem.value.getBoundingClientRect();
       indicator.value.style.width = width + 'px';
       const {left: left1} = container.value.getBoundingClientRect();
       const {left: left2} = selectedItem.value.getBoundingClientRect();
       const left = left2 - left1;
       indicator.value.style.left = left + 'px';
-    };
-    onMounted(x);
-    onUpdated(x);
-
+    }, {flush: 'post'});
     const defaults = context.slots.default();
     const titles = defaults.map(tag => tag.props.title);
     const current = computed(() => {
@@ -55,7 +53,7 @@ export default {
       context.emit('update:selected', title);
     };
     return {
-      defaults, titles, current, select,selectedItem, indicator, container
+      defaults, titles, current, select, indicator, container, selectedItem,
     };
   }
 };
