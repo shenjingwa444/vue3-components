@@ -1,8 +1,10 @@
 {
   "dependencies": {
+    "github-markdown-css": "^5.1.0",
     "vue-router": "4.0.3"
   },
   "devDependencies": {
+    "marked": "^1.1.1",
     "sass": "1.32.11"
   }
 }
